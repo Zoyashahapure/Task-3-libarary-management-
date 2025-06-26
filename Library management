@@ -1,0 +1,71 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Book {
+    private String title;
+    private String author;
+    private boolean isAvailable = true;
+
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void borrowBook() {
+        if (isAvailable) {
+            isAvailable = false;
+        } else {
+            System.out.println("Book is already borrowed.");
+        }
+    }
+
+    public void returnBook() {
+        isAvailable = true;
+    }
+
+    @Override
+    public String toString() {
+        return title + " by " + author + " [" + (isAvailable ? "Available" : "Borrowed") + "]";
+    }
+}
+
+class Member {
+    private String name;
+    private List<Book> borrowedBooks = new ArrayList<>();
+
+    public Member(String name) {
+        this.name = name;
+    }
+
+    public void borrowBook(Book book) {
+        if (book.isAvailable()) {
+            book.borrowBook();
+            borrowedBooks.add(book);
+            System.out.println(name + " borrowed " + book);
+        } else {
+            System.out.println("Book is not available.");
+        }
+    }
+
+    public void returnBook(Book book) {
+        if (borrowedBooks.remove(book)) {
+            book.returnBook();
+            System.out.println(name + " returned " + book);
+        }
+    }
+}
+
+public class LibraryManagement {
+    public static void main(String[] args) {
+        Book book1 = new Book("The Alchemist", "Paulo Coelho");
+        Book book2 = new Book("Atomic Habits", "James Clear");
+
+        Member member1 = new Member("Alice");
+        member1.borrowBook(book1);
+        member1.returnBook(book1);
+    }
+}
